@@ -7,7 +7,7 @@
 | 部分 | 内容 | 依赖 |
 |---|---|---|
 | `skills/` | 224 个技能目录，每个含 `SKILL.md`（YAML frontmatter + 正文） | 无，纯文本 |
-| `mcp/` | 51 个工具的 stdio MCP server，覆盖 22 个公开数据源 | Python 3.9+ 标准库，无第三方包、无 token |
+| `mcp/` | 51 个工具的 stdio MCP server，分 22 个工具域（`pubmed_*`、`chembl_*` …），背后是 20+ 个公开数据源 | Python 3.9+ 标准库，无第三方包、无 token |
 
 技能负责**选方法、给参数、写流程**；MCP 负责**取真实数据**。两者互不依赖，可以只用其中一个。
 
@@ -54,7 +54,7 @@ description: 端到端 bulk RNA-seq 编排：QC/修剪 → 比对定量 → coun
 ### 2. Claude Code / Claude Desktop
 
 - **技能**：复制到 `~/.claude/skills/`（或项目的 `.claude/skills/`），Claude Code 会自动发现。
-- **MCP**：把 `examples/claude-desktop.json` 的内容合并进 Claude Desktop 配置（macOS `~/Library/Application Support/Claude/claude_desktop_config.json`），把路径换成你的实际路径。
+- **MCP**：把 `examples/claude-desktop.json` 的内容合并进 Claude Desktop 配置，路径换成你的实际路径：\n  - macOS：`~/Library/Application Support/Claude/claude_desktop_config.json`\n  - Windows：`%APPDATA%\\Claude\\claude_desktop_config.json`\n  - Linux：`~/.config/Claude/claude_desktop_config.json`
 
 ### 3. Cursor / Windsurf
 
@@ -63,8 +63,8 @@ description: 端到端 bulk RNA-seq 编排：QC/修剪 → 比对定量 → coun
 
 ### 4. DeepSeek Harness
 
-- **技能**：作为 skill provider 的 bundledSkillDir 指向 `skills/`，或用 `skill-filesystem` 的自定义根。
-- **MCP**：用 `mcp-client` 行，命令 `python`、参数指向 `mcp/biomedical_mcp.py`。
+- **技能**：把 `skills/` 配成技能根目录（`skill-filesystem` 的 `bundledSkillDir` 或 `customSkillDirs`）。
+- **MCP**：用 `mcp-client` 行，命令 `python`，参数指向 `mcp/biomedical_mcp.py`。
 
 配置细节见 `examples/generic-stdio.md`（stdio 通用说明 + 自检命令）。
 
@@ -87,16 +87,32 @@ description: 端到端 bulk RNA-seq 编排：QC/修剪 → 比对定量 → coun
 
 ## MCP 工具（51 / 22 个域）
 
-| 域 | 工具数 | 示例 |
+22 个域，合计 51 个工具：
+
+| 域前缀 | 工具数 | 数据源 |
 |---|---|---|
-| 基因组序列与注释 | 3 | `genomes_sequence`、`genes_lookup` |
-| 变异 | 3 | `variants_gnomad`、`variants_clinvar` |
-| 表达与调控 | 4 | `expression_gtex`、`regulation_roadmap` |
-| 蛋白与结构 | 6 | `protein_uniprot`、`structures_pdb` |
-| 化学与药物 | 6 | `chembl_compound`、`drug_opentargets` |
-| 文献 | 5 | `pubmed_search_articles`、`biorxiv_recent` |
-| 临床 | 4 | `clinicaltrials_search`、`cancer_depmap` |
-| 单细胞图谱 | 2 | `cellguide_cell_types` |
+| `genomes_` | 3 | Ensembl / UCSC 类基因组序列与注释 |
+| `genes_` | 3 | 基因注释与标识符映射 |
+| `variants_` | 3 | gnomAD / ClinVar / dbSNP |
+| `expression_` | 2 | GTEx 类表达数据 |
+| `regulation_` | 2 | 调控元件与表观数据 |
+| `protein_` | 3 | UniProt 蛋白注释 |
+| `structures_` | 3 | PDB / AlphaFold 结构 |
+| `rna_` | 2 | Rfam 等 RNA 家族 |
+| `omics_` | 3 | 多组学聚合查询 |
+| `biomart_` | 2 | Ensembl BioMart |
+| `chembl_` | 3 | ChEMBL 化合物、活性、靶点 |
+| `chemistry_` | 3 | 化学性质与结构检索 |
+| `zinc_` | 1 | ZINC 可购买化合物 |
+| `drug_` | 2 | Open Targets 等药物-靶点 |
+| `pubmed_` | 3 | PubMed 检索、元数据、相关文献 |
+| `biorxiv_` | 2 | bioRxiv 预印本 |
+| `literature_` | 2 | 文献计量 |
+| `clinicaltrials_` | 2 | ClinicalTrials.gov 试验检索与详情 |
+| `clinical_` | 2 | 临床变异与结局 |
+| `cancer_` | 2 | DepMap 等癌症依赖与敏感性 |
+| `cellguide_` | 2 | 单细胞图谱细胞类型 |
+| `human_` | 1 | 人类基因本体与表型 |
 
 完整清单见 [`mcp/README.md`](mcp/README.md)。
 
@@ -126,4 +142,6 @@ description: 端到端 bulk RNA-seq 编排：QC/修剪 → 比对定量 → coun
 
 ## 许可
 
-MIT。技能正文部分整理自各软件官方文档与社区实践，引用处已标注来源。
+本仓库的结构、脚本与文档以 MIT 发布。
+
+`skills/` 下各技能的正文整理自对应软件的官方文档与社区实践，引用处已标注来源；其内容版权归各上游项目与作者所有，如需再分发请核对上游许可。
