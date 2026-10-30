@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "biomedical-data": {
+      "command": "python",
+      "args": [
+        "/path/to/biomedical-omics-agent-kit/mcp/biomedical_mcp.py"
+      ],
+      "env": {}
+    }
+  }
+}
