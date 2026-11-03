@@ -39,6 +39,28 @@ description: 端到端 bulk RNA-seq 编排：QC/修剪 → 比对定量 → coun
 
 **通用约定**：`name` 与目录名一致；`description` 写清"什么时候该用这个技能"，agent 靠它决定是否加载；正文只写可执行的东西（命令、参数、阈值），不写空泛建议。
 
+## 按需加载：不要把 224 个全塞给模型
+
+**不建议一次性把全部 224 个技能注册给 agent。按当前分析目标，只暴露相关的那几十个。**
+
+原因有两个，第二个比第一个更重要：
+
+1. **成本**：技能的 `name` + `description` 会作为目录常驻在上下文里。全量约 2.8 万字符，每轮对话都带着。
+2. **准确率**：模型是从目录里挑技能。候选集越大，近义技能越容易互相干扰（例如 `sc-clustering-umap` 与 `sc-cell-type-annotation`、`nfcore-rnaseq` 与 `nfcore-smrnaseq`）。只暴露相关子集时，命中率明显更高。
+
+推荐做法：按主题把 `skills/` 下的目录分批暴露，例如
+
+| 你的目标 | 建议暴露 |
+|---|---|
+| 单细胞 | `sc-*`、`nfcore-sc*`、`scanpy`、`scvi-*`、`anndata` 相关 |
+| bulk RNA-seq | `bulk-rnaseq`、`nfcore-rnaseq`、`pydeseq2`、`pathway-enrichment`、`04-transcriptomics-*` |
+| 表观组 | `nfcore-chipseq`、`nfcore-atacseq`、`nfcore-methyl*`、`03-epigenomics-*`、`deeptools` |
+| 微生物组 | `nfcore-mag`、`nfcore-taxprofiler`、`09-metagenomics-*`、`microbiome-*` |
+| 蛋白组/代谢组 | `nfcore-proteomicslfq`、`nfcore-quantms`、`pyopenms`、`07-proteomics-*`、`08-metabolomics-*` |
+| 网络与多组学整合 | `wgcna-*`、`arboreto`、`string`、`network-*`、`*multi-omics*` |
+
+`description` 与 `whenToUse` 就是给模型判断用的：前者写"做什么"，后者写"什么时候该叫我"。挑技能时读这两个字段就够，不需要展开正文。
+
 ## 接入方式
 
 ### 1. 任何能读文件的 agent（最通用）

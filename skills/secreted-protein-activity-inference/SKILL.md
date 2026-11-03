@@ -1,6 +1,7 @@
 ---
 name: secreted-protein-activity-inference
-description: "当用户问哪种细胞因子可能让另一群细胞发生变化、某分泌蛋白是否解释接收细胞的基因变化，或已有NicheNet/MultiNicheNet活性结果却缺配体排名和靶基因图时使用；结合发送表达、受体与接收响应推断候选。只有疾病或发表愿望时先检查问题与数据，不直接承诺机制。"
+description: 当用户问哪种细胞因子可能让另一群细胞发生变化、某分泌蛋白是否解释接收细胞的基因变化，或已有NicheNet/MultiNicheNet活性结果却缺配体排名和靶基因图时使用；结合发送表达、受体与接收响应推断候选。只有疾病或发表愿望时先检查问题与数据，不直接承诺机制。
+whenToUse: 当用户问哪种细胞因子可能让另一群细胞发生变化、某分泌蛋白是否解释接收细胞的基因变化，或已有NicheNet/MultiNicheNet活性结果却缺配体排名和靶基因图时使用
 ---
 
 # 分泌蛋白活性推断
@@ -41,13 +42,13 @@ MultiNicheNet还输出分条件/接收群/上调或下调响应的配体活性�
 
 有表达矩阵、发送/接收群、明确响应基因集及版本化先验时，运行 [run_nichenet.R](scripts/run_nichenet.R)。它读取基因×细胞 expression 与 metadata 的 RDS、LR 先验和 ligand-target 矩阵，原生执行 NicheNet 活性与靶基因关联，保留对象和来源。配置需包含 dataset/research_question/input/lr_network/ligand_target_matrix/gene_set/gene_set_definition/receiver/network_version/expression_scale；发送群由 senders 指定。依赖 nichenetr 2.2.1.1、jsonlite、digest、Matrix。输出目录必须在 Git 外且不存在。
 
-由主通讯 skill 的多方法入口执行时自动接续结果包绘图；单独执行时发现已安装主通讯组件 `05-single-cell-virtual-cell-b08-t04` 的 render_result_bundle.py 后直接生成配体排序、靶基因热图和机制关联网络，不等用户补绘图指令。未安装时给出明确依赖失败并保留原生对象。方法注册中的 CellCall、MultiNicheNet、FlowSig 等使用各自原生实现与输入要求，不能用 NicheNet 的结果冒充。
+由主通讯 skill 的多方法入口执行时自动接续结果包绘图；单独执行时发现已安装主通讯组件 `sc-cell-communication` 的 render_result_bundle.py 后直接生成配体排序、靶基因热图和机制关联网络，不等用户补绘图指令。未安装时给出明确依赖失败并保留原生对象。方法注册中的 CellCall、MultiNicheNet、FlowSig 等使用各自原生实现与输入要求，不能用 NicheNet 的结果冒充。
 
 FlowSig 分支通过主通讯组件的 run_flowsig.py（固定 flowsig 0.5.5、独立 Python 环境）执行。需要两个真实条件、control、按条件对应的原生 CellChat 结果及实际 GEM；gem_mode=reuse 必须记录上游 GEM 来源，或 gem_mode=native_nmf 从明确 counts 层拟合。它重新构建 inflow/module/outflow 并执行原生 bootstrap、类型约束和边筛选，自动出分层网络、频率热图与逐供体模块载荷。旧 H5AD 中的网络结果不参与本次推断。
 
 FlowSig 使用原生未按细胞总和闭合的 GEM，检查各条件变异和矩阵条件数；默认排除每条件不足10个可辨识变异细胞或相对标准差过低的变量，保存排除记录。进入模型前按全队列每变量一个标准差作数值缩放，绝不逐条件归一化，原始矩阵和缩放值保留。数值警告触发失败，不降低门槛凑图。边频率不是 P，模块间未定向边用无箭头虚线，三供体配对数据也不能把细胞 bootstrap 当成供体层因果验证。macOS 环境需要可用 OpenMP；若 Accelerate 报矩阵运算警告，使用同版本经核验的 OpenBLAS 构建并重跑数值检查，不屏蔽警告。
 
-CellCall 的 LR–TF 原生整合通过主通讯 skill 的稳定 ID `05-single-cell-virtual-cell-b08-t04` 定位该主通讯 Skill 内的 `run_cellcall.R`，由主入口自动执行到图集。具体状态、版本和入口以该 skill 的唯一方法契约为准；CellCallEXT 为独立软件，不能用 CellCall 的 extended 数据库参数代替。LR 分数没有原生联合 P/FDR 时只描述原生正分数筛选；不同单位的 LR 与 TF 权重分开保存，机制图不得混合为统一流量。
+CellCall 的 LR–TF 原生整合通过主通讯 skill 的稳定 ID `sc-cell-communication` 定位该主通讯 Skill 内的 `run_cellcall.R`，由主入口自动执行到图集。具体状态、版本和入口以该 skill 的唯一方法契约为准；CellCallEXT 为独立软件，不能用 CellCall 的 extended 数据库参数代替。LR 分数没有原生联合 P/FDR 时只描述原生正分数筛选；不同单位的 LR 与 TF 权重分开保存，机制图不得混合为统一流量。
 
 ## 默认图件交付
 

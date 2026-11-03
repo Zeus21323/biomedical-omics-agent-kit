@@ -44,7 +44,7 @@
 | 技能 | 说明 |
 |---|---|
 | `gwas-functional-interpretation` | 当用户有疾病遗传关联结果，不知道涉及什么通路、组织或细胞类型、想补机制解释和富集图，或提出MAGMA/分层LDSC时使用；区分遗传信号富集与普通基因列表富集。 |
-| `04-transcriptomics-b05-t03` | 用于全量排序特征的GSEA以及GSVA、ssGSEA样本级基因集评分；当用户需要通路方向、leading-edge基因或每个样本的通路分数时使用。 |
+| `gsea-gsva-scoring` | 用于全量排序特征的GSEA以及GSVA、ssGSEA样本级基因集评分；当用户需要通路方向、leading-edge基因或每个样本的通路分数时使用。 |
 | `pathway-enrichment` | Run pathway and gene-set enrichment analysis on gene lists or ranked gene data, then interpret the results. Use whenever the user has a set of genes (differentially expressed genes from PyDESeq2/Scanp… |
 | `pathway-enrichment-analysis` | 用于基因、蛋白或代谢物列表的GO、KEGG、Reactome等过度富集分析；当用户已有候选特征集合和明确背景集时使用。 |
 | `pydeseq2` | Differential gene expression analysis for bulk RNA-seq with PyDESeq2, including formulaic designs, Wald tests, FDR correction, LFC shrinkage, and result visualization. |
@@ -60,15 +60,15 @@
 | 技能 | 说明 |
 |---|---|
 | `scanpy` | Standard single-cell RNA-seq analysis pipeline. For quality control (QC), normalization, dimensionality reduction (PCA/UMAP/t-SNE), clustering, differential expression analysis, and visualization. Bes… |
-| `05-single-cell-virtual-cell-b01-t01` | 当用户拿到单细胞表达文件不知道质量是否可用，想清理低质量细胞、查看过滤前后变化，或发现QC图空白、质量指标缺失、过滤后细胞骤减时使用；涵盖10x及其他scRNA-seq计数数据的预处理与质量控制。已有对象先核查当前阶段，不要求用户知道列名、计数层或质控软件。 |
-| `05-single-cell-virtual-cell-b01-t02` | 当用户需要把 scATAC-seq FASTQ 或 fragments 转成经过条形码、片段质量和可及性检查的 tile/peak 矩阵时使用。 |
-| `05-single-cell-virtual-cell-b01-t03` | 当用户需要处理 10x Multiome 等同细胞多模态数据，保持条形码配对，分别质控各模态后再建立联合表示时使用。 |
-| `05-single-cell-virtual-cell-b01-t04` | 当用户需要整合多样本、平台或队列的单细胞数据，在减少技术差异的同时检测过校正和真实条件信号丢失时使用。 |
-| `05-single-cell-virtual-cell-b02-t01` | 当用户需要按样本识别液滴单细胞数据中的异型和同型双细胞，并区分技术混合与真实过渡或活化状态时使用。 |
-| `05-single-cell-virtual-cell-b02-t02` | 当用户需要估计 droplet scRNA-seq 空液滴中的环境 RNA，并在保留原始计数的前提下校正受污染细胞时使用。 |
-| `05-single-cell-virtual-cell-b02-t03` | 当用户发现单细胞线粒体比例很高、全为零或缺失，想判断细胞质量、解释线粒体比例图，或担心过滤删掉真实细胞群时使用；结合组织、物种、基因标识和其他质量指标核验计算与过滤规则，不要求用户选择统一百分比阈值。 |
-| `05-single-cell-virtual-cell-b03-t01` | 当用户想把单细胞分成可靠群体、不知道该保留多少维或分多少群，已有PCA图看不懂、标签挤在一起，或UMAP结果不稳定时使用；涵盖PCA/LSI、邻居图与聚类，先检查质控对象和已有结果，不要求用户知道算法、软件或技术参数。 |
-| `05-single-cell-virtual-cell-b04-t04` | 当用户问这些细胞是什么、细胞名字是否正确、两种注释结果冲突、疾病细胞是否被误标，或需要细胞注释、参考映射、scDiagnostics诊断时使用；从对象、marker和参考主动识别注释及复核需要，保留未知、新状态和低置信标签。 |
+| `scrna-qc-filtering` | 当用户拿到单细胞表达文件不知道质量是否可用，想清理低质量细胞、查看过滤前后变化，或发现QC图空白、质量指标缺失、过滤后细胞骤减时使用；涵盖10x及其他scRNA-seq计数数据的预处理与质量控制。已有对象先核查当前阶段，不要求用户知道列名、计数层或质控软件。 |
+| `scatac-fragment-matrix` | 当用户需要把 scATAC-seq FASTQ 或 fragments 转成经过条形码、片段质量和可及性检查的 tile/peak 矩阵时使用。 |
+| `sc-multiome-integration` | 当用户需要处理 10x Multiome 等同细胞多模态数据，保持条形码配对，分别质控各模态后再建立联合表示时使用。 |
+| `sc-batch-integration` | 当用户需要整合多样本、平台或队列的单细胞数据，在减少技术差异的同时检测过校正和真实条件信号丢失时使用。 |
+| `sc-doublet-detection` | 当用户需要按样本识别液滴单细胞数据中的异型和同型双细胞，并区分技术混合与真实过渡或活化状态时使用。 |
+| `sc-ambient-rna-correction` | 当用户需要估计 droplet scRNA-seq 空液滴中的环境 RNA，并在保留原始计数的前提下校正受污染细胞时使用。 |
+| `scrna-mito-diagnosis` | 当用户发现单细胞线粒体比例很高、全为零或缺失，想判断细胞质量、解释线粒体比例图，或担心过滤删掉真实细胞群时使用；结合组织、物种、基因标识和其他质量指标核验计算与过滤规则，不要求用户选择统一百分比阈值。 |
+| `sc-clustering-umap` | 当用户想把单细胞分成可靠群体、不知道该保留多少维或分多少群，已有PCA图看不懂、标签挤在一起，或UMAP结果不稳定时使用；涵盖PCA/LSI、邻居图与聚类，先检查质控对象和已有结果，不要求用户知道算法、软件或技术参数。 |
+| `sc-cell-type-annotation` | 当用户问这些细胞是什么、细胞名字是否正确、两种注释结果冲突、疾病细胞是否被误标，或需要细胞注释、参考映射、scDiagnostics诊断时使用；从对象、marker和参考主动识别注释及复核需要，保留未知、新状态和低置信标签。 |
 | `nfcore-hadge` | 当单细胞混样数据需要借助基因型或样本标签恢复供者身份时使用。根据文件、实验背景与研究问题判断适配性，选择方法及参数并解释限制；无需用户知道 nf-core/hadge。 |
 | `nfcore-marsseq` | 当已确认板式 MARS-seq 数据，需要按孔位和分子标签整理表达时使用。根据文件、实验背景与研究问题判断适配性，选择方法及参数并解释限制；无需用户知道 nf-core/marsseq。 |
 | `nfcore-scdownstream` | 当收到单细胞表达矩阵、H5AD 或分析对象，需要细胞质控、注释与组间研究时使用。根据文件、实验背景与研究问题判断适配性，选择方法及参数并解释限制；无需用户知道 nf-core/scdownstream。 |
@@ -86,15 +86,15 @@
 |---|---|
 | `scgpt` | 使用单细胞生物学基础模型 scGPT 对单细胞表达数据进行嵌入和注释。适用于：从 AnnData 生成细胞嵌入以进行聚类或整合；执行零样本或微调后的细胞类型注释；为扰动或基因调控网络任务生成基因级表示。对于 scVI 等概率单细胞模型，请使用 scvi-tools 库。 |
 | `scvi-tools` | 使用 scvi-tools 对单细胞 RNA 测序数据进行概率建模——使用 scVI 获得批次校正的潜在空间，使用 scANVI 进行半监督标签转移，并执行贝叶斯差异表达分析。适用于整合多个 scRNA-seq 批次、生成细胞嵌入以进行聚类、将参考数据的注释转移到查询数据，或按细胞簇评估差异表达基因。空间解卷积或映射应改用 cell2location、DestVI 或 Tangram。 |
-| `05-single-cell-virtual-cell-b05-t02` | 当用户需要为细胞周期、应激、干扰素、耗竭等连续程序评分，并区分状态变化与细胞类型组成变化时使用。 |
-| `05-single-cell-virtual-cell-b06-t03` | 当用户需要使用剪接动力学估计细胞状态变化方向，并结合转移模型评估潜在起始、终末状态和命运概率时使用。 |
-| `05-single-cell-virtual-cell-b06-t05` | 当用户需要在有生物学连通依据的细胞谱系内重建分支和伪时间，并检验根节点、批次和供体对轨迹的影响时使用。 |
-| `05-single-cell-virtual-cell-b08-t04` | 当用户问哪些细胞在互相影响、某基因是否参与细胞间传话、疾病或治疗前后通讯有何变化，或已有单细胞/细胞通讯结果却只有矩阵、缺网络弦图、图太乱或不同数据总出现相同分子时使用；涵盖配体–受体推断、条件比较、结果复用和适用图集。只有疾病、发表或毕业愿望时先识别问题与数据，不直接运行。 |
-| `05-single-cell-virtual-cell-b09-t01` | 当用户需要分析 CRISPR Perturb-seq、CRISPRi/a 数据，将 guide 可靠分配到细胞并估计扰动的平均效应和状态依赖效应时使用。 |
-| `05-single-cell-virtual-cell-b09-t04` | 当用户需要使用已训练单细胞模型预测基因敲除、过表达或其他扰动后的表达状态，并评估训练域和校准限制时使用。 |
-| `05-single-cell-virtual-cell-b09-t05` | 当用户需要利用单细胞基线和扰动图谱预测药物在不同细胞状态中的响应，并明确剂量、时间和训练域外推风险时使用。 |
-| `05-single-cell-virtual-cell-b10-t01` | 当用户需要联合分析 CITE-seq 的 RNA 与抗体衍生标签，校正 ADT 背景并为每个细胞选择合理的模态权重时使用。 |
-| `05-single-cell-virtual-cell-b10-t03` | 当用户需要联合分析同一单细胞的基因组DNA与转录组数据，并关联变异、拷贝数、等位基因和表达状态时使用。 |
+| `sc-program-scoring` | 当用户需要为细胞周期、应激、干扰素、耗竭等连续程序评分，并区分状态变化与细胞类型组成变化时使用。 |
+| `sc-rna-velocity` | 当用户需要使用剪接动力学估计细胞状态变化方向，并结合转移模型评估潜在起始、终末状态和命运概率时使用。 |
+| `sc-trajectory-inference` | 当用户需要在有生物学连通依据的细胞谱系内重建分支和伪时间，并检验根节点、批次和供体对轨迹的影响时使用。 |
+| `sc-cell-communication` | 当用户问哪些细胞在互相影响、某基因是否参与细胞间传话、疾病或治疗前后通讯有何变化，或已有单细胞/细胞通讯结果却只有矩阵、缺网络弦图、图太乱或不同数据总出现相同分子时使用；涵盖配体–受体推断、条件比较、结果复用和适用图集。只有疾病、发表或毕业愿望时先识别问题与数据，不直接运行。 |
+| `sc-perturb-seq` | 当用户需要分析 CRISPR Perturb-seq、CRISPRi/a 数据，将 guide 可靠分配到细胞并估计扰动的平均效应和状态依赖效应时使用。 |
+| `sc-virtual-perturbation` | 当用户需要使用已训练单细胞模型预测基因敲除、过表达或其他扰动后的表达状态，并评估训练域和校准限制时使用。 |
+| `sc-drug-response-prediction` | 当用户需要利用单细胞基线和扰动图谱预测药物在不同细胞状态中的响应，并明确剂量、时间和训练域外推风险时使用。 |
+| `cite-seq-integration` | 当用户需要联合分析 CITE-seq 的 RNA 与抗体衍生标签，校正 ADT 背景并为每个细胞选择合理的模态权重时使用。 |
+| `sc-dna-rna-joint` | 当用户需要联合分析同一单细胞的基因组DNA与转录组数据，并关联变异、拷贝数、等位基因和表达状态时使用。 |
 | `metabolite-mediated-cell-communication` | 当用户问细胞释放的代谢物是否影响其他细胞、某代谢物或转运体与疾病微环境有什么关系，或已有MEBOCOST/代谢通讯结果却缺三层网络和证据图时使用；从单细胞及可用代谢数据推断通讯潜力。只有疾病或发表愿望时先检查问题与数据，不把酶表达当实测代谢流。 |
 | `scvi-single-cell-probabilistic-modeling` | 当用户需要使用 scVI、scANVI 或 totalVI 对单细胞计数进行概率表征、半监督标签迁移或 RNA-蛋白联合建模时使用。 |
 | `secreted-protein-activity-inference` | 当用户问哪种细胞因子可能让另一群细胞发生变化、某分泌蛋白是否解释接收细胞的基因变化，或已有NicheNet/MultiNicheNet活性结果却缺配体排名和靶基因图时使用；结合发送表达、受体与接收响应推断候选。只有疾病或发表愿望时先检查问题与数据，不直接承诺机制。 |
@@ -103,14 +103,14 @@
 | `single-cell-genetic-variant-detection` | 当用户想从单细胞数据找突变、判断不同部位细胞是否可能来自同一克隆、寻找遗传差异或祖源证据，或提到Monopogen-Indel时使用；先检查是否有带细胞标识的读段与参考，表达矩阵或伪时间不能替代遗传变异证据。 |
 | `single-cell-transposon-expression` | 当用户需要在单细胞 RNA 数据中估计转座元件家族或位点表达，并显式处理重复序列多重比对和基因重叠时使用。 |
 | `transcriptomic-reverse-perturbation` | 当用户已有或希望构建两个转录组状态的差异签名，需要利用遗传扰动响应参考库筛选可能模拟或逆转该变化的候选基因扰动，或明确要求用 RevPert 排序并解释候选驱动因子时使用。 |
-| `21-biological-foundation-models-b04-t01` | 当用户需要用scGPT为单细胞表达数据生成嵌入、辅助细胞类型注释或构建基因表示时使用。 |
+| `scgpt-embedding` | 当用户需要用scGPT为单细胞表达数据生成嵌入、辅助细胞类型注释或构建基因表示时使用。 |
 
 ## 空间组学分析（15）
 
 | 技能 | 说明 |
 |---|---|
 | `he-virtual-spatial-transcriptomics` | 当用户需要用DeepSpot-M从H&E切片切块预测空间基因表达并评估适用性时使用。 |
-| `06-spatial-omics-b05-t01` | 当用户需要分析带空间坐标的染色质可及性或空间表观组数据，并识别空间调控区域、细胞状态和区域差异时使用。 |
+| `spatial-atac-analysis` | 当用户需要分析带空间坐标的染色质可及性或空间表观组数据，并识别空间调控区域、细胞状态和区域差异时使用。 |
 | `06-spatial-omics-cell2location` | 当用户需要利用匹配的单细胞参考估计空间 spot/bin 的细胞组成，或把细胞状态映射到组织位置，并量化参考缺失与映射不确定性时使用。 |
 | `06-spatial-omics-spatial-domain-identification` | 当用户需要根据表达、形态和物理邻接识别组织域与边界，并评估域在样本、尺度和算法之间是否稳定时使用。 |
 | `06-spatial-omics-spatial-metabolomics` | 当用户需要处理 MALDI、DESI 等质谱成像数据，建立可信离子图、空间代谢物注释和组织区域比较；适用于保留像素坐标的 MSI 任务时使用。 |
@@ -180,7 +180,7 @@
 | `04-transcriptomics-tf-activity-inference` | 用于从表达数据和TF—靶基因regulon推断转录因子活性；当TF自身表达量不足以代表其调控状态时使用。 |
 | `nfcore-tfactivity` | 当表达和染色质可及性数据希望推断转录因子活动变化时使用。根据文件、实验背景与研究问题判断适配性，选择方法及参数并解释限制；无需用户知道 nf-core/tfactivity。 |
 | `single-cell-regulatory-network` | 当用户需要从单细胞 RNA、ATAC 或多组学数据构建带 motif、可及性和扰动支持的 TF-regulon 调控网络时使用。 |
-| `21-biological-foundation-models-b01-t03` | 当用户需要用Evo 2对长DNA序列进行似然评分、嵌入、变异效应比较或条件生成时使用。 |
+| `evo2-sequence-scoring` | 当用户需要用Evo 2对长DNA序列进行似然评分、嵌入、变异效应比较或条件生成时使用。 |
 | `plant-long-context-genome-modeling` | 当用户研究水稻、拟南芥等植物的候选基因/调控区域，想比较长DNA片段或变异、寻找可辅助课题的序列模型证据，或指定BOTANIC-1时使用；先确定物种、参考、任务和模型资源，不因植物基因名自动生成预测。 |
 | `arboreto` | Infer gene regulatory networks (GRNs) from gene expression data using scalable algorithms (GRNBoost2, GENIE3). Use when analyzing transcriptomics data (bulk RNA-seq, single-cell RNA-seq) to identify t… |
 
